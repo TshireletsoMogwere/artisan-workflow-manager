@@ -4,7 +4,29 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>artisan-workflow-manager</title>
+    <title>Artisan Workflow Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: "#4F46E5",
+secondary: "#6366F1",
+accent: "#10B981",
+neutral: "#F9FAFB",
+textDark: "#111827",
+textLight: "#6B7280",
+},
+},
+},
+};
+</script>
+
+
+<style>
+body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background-color: #F9FAFB; color: #111827; }
+</style>
   </head>
   <body>
     <div id="root"></div>
