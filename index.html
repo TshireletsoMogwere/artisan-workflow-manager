@@ -1,35 +1,217 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Artisan Workflow Manager</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-tailwind.config = {
-theme: {
-extend: {
-colors: {
-primary: "#EF4444",
-secondary: "#F97316",
-accent: "#3B82F6",
-neutral: "#F3F4F6",
-textDark: "##1F2937",
-textLight: "#4B5563",
-},
-},
-},
-};
-</script>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Artisan Workflow Manager — MVP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+<!-- ===== Public Landing Page ===== -->
+<section id="landing-page" class="min-h-screen bg-gray-50 text-gray-800 flex flex-col items-center justify-center px-6">
+  <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 text-center">
+    Artisan Workflow Manager
+  </h1>
+  <p class="text-lg md:text-xl text-gray-600 mb-10 text-center max-w-2xl">
+    Manage artisan projects, track inventory, and streamline client requests — all in one place.
+  </p>
 
+  <!-- Roles Section -->
+  <div class="grid md:grid-cols-3 gap-6 mb-12 max-w-5xl">
+    <div class="p-6 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h2 class="text-xl font-semibold mb-2 text-indigo-600">Manager</h2>
+      <p class="text-gray-600 text-sm">
+        Oversee projects, assign tasks, manage artisans, and monitor inventory levels.
+      </p>
+    </div>
+    <div class="p-6 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h2 class="text-xl font-semibold mb-2 text-indigo-600">Artisan</h2>
+      <p class="text-gray-600 text-sm">
+        View assigned tasks, log materials used, and update project status with ease.
+      </p>
+    </div>
+    <div class="p-6 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h2 class="text-xl font-semibold mb-2 text-indigo-600">Client</h2>
+      <p class="text-gray-600 text-sm">
+        Track your project progress, see completion percentages, and communicate updates.
+      </p>
+    </div>
+  </div>
 
-<style>
-body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background-color: #F9FAFB; color: #111827; }
-</style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <!-- Subscription Pricing -->
+  <div class="grid md:grid-cols-3 gap-6 mb-12 max-w-5xl">
+    <div class="p-6 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Free</h3>
+      <p class="text-gray-600 text-sm mb-2">R0 / month</p>
+      <ul class="text-sm text-gray-500 list-disc ml-5 mb-4">
+        <li>Up to 2 projects</li>
+        <li>10 tasks</li>
+        <li>LocalStorage data only</li>
+      </ul>
+    </div>
+    <div class="p-6 bg-white rounded-2xl shadow hover:shadow-md transition border border-indigo-500">
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Pro</h3>
+      <p class="text-gray-600 text-sm mb-2">R99 / month</p>
+      <ul class="text-sm text-gray-500 list-disc ml-5 mb-4">
+        <li>Unlimited projects/tasks</li>
+        <li>Cloud backup (future)</li>
+        <li>Team members</li>
+      </ul>
+    </div>
+    <div class="p-6 bg-white rounded-2xl shadow hover:shadow-md transition">
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Business</h3>
+      <p class="text-gray-600 text-sm mb-2">R199 / month</p>
+      <ul class="text-sm text-gray-500 list-disc ml-5 mb-4">
+        <li>Team management</li>
+        <li>Task reminders</li>
+        <li>Premium analytics</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CTA Button -->
+  <button id="get-started-btn" class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition">
+    Get Started
+  </button>
+</section>
+
+  <!-- AUTH -->
+  <div id="auth-container" class="hidden w-full max-w-md bg-white p-6 rounded shadow">
+    <h2 id="auth-title" class="text-2xl font-bold mb-4 text-center">Login</h2>
+
+    <form id="login-form" class="flex flex-col space-y-3">
+      <input id="login-email" type="email" placeholder="Email" class="border p-2 rounded" required>
+      <input id="login-password" type="password" placeholder="Password" class="border p-2 rounded" required>
+      <button class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Login</button>
+      <p class="text-sm text-gray-500">Don't have an account? <span id="to-signup" class="text-blue-600 cursor-pointer">Sign up</span></p>
+    </form>
+
+    <form id="signup-form" class="hidden flex flex-col space-y-3">
+      <input id="signup-name" type="text" placeholder="Full name" class="border p-2 rounded" required>
+      <input id="signup-email" type="email" placeholder="Email" class="border p-2 rounded" required>
+      <input id="signup-password" type="password" placeholder="Password" class="border p-2 rounded" required>
+      <select id="signup-role" class="border p-2 rounded">
+        <option value="manager">Admin</option>
+        <option value="artisan">Artisan</option>
+        <option value="client">Client</option>
+      </select>
+      <select id="signup-subscription" class="border p-2 rounded">
+        <option value="free">Free (R0)</option>
+        <option value="pro">Pro (R99)</option>
+        <option value="business">Business (R199)</option>
+      </select>
+      <button class="bg-green-600 text-white p-2 rounded hover:bg-green-700">Sign up</button>
+      <p class="text-sm text-gray-500">Already have an account? <span id="to-login" class="text-blue-600 cursor-pointer">Login</span></p>
+    </form>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="main-app" class="hidden w-full max-w-6xl space-y-6">
+    <div class="flex justify-between items-center bg-white p-4 rounded shadow">
+      <div>
+        <h1 class="text-2xl font-bold">Artisan Workflow Manager</h1>
+        <div class="text-sm text-gray-600">Logged in as <span id="current-user-name"></span> — <span id="current-role" class="font-semibold"></span></div>
+      </div>
+      <div>
+        <span id="current-subscription" class="mr-4 font-semibold"></span>
+        <button id="logout-btn" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Logout</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      <!-- TASKS -->
+      <section class="bg-white p-4 rounded shadow">
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="font-bold text-lg">Tasks</h2>
+          <button id="add-task-btn" class="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 hidden">Add Task</button>
+        </div>
+        <ul id="task-list" class="space-y-2"></ul>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="bg-white p-4 rounded shadow">
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="font-bold text-lg">Projects</h2>
+          <button id="request-project-btn" class="bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700">Request Project</button>
+        </div>
+        <ul id="project-list" class="space-y-2"></ul>
+      </section>
+
+      <!-- INVENTORY -->
+      <section class="bg-white p-4 rounded shadow">
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="font-bold text-lg">Inventory</h2>
+          <button id="add-inventory-btn" class="bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-700 hidden">Add</button>
+        </div>
+        <ul id="inventory-list" class="space-y-2"></ul>
+      </section>
+
+    </div>
+
+    <!-- USERS (admin only) -->
+    <section id="user-management" class="bg-white p-4 rounded shadow hidden">
+      <h2 class="font-bold text-lg mb-2">Users</h2>
+      <ul id="user-list" class="space-y-2"></ul>
+    </section>
+  </div>
+
+  <!-- MODALS -->
+
+  <!-- Task Modal (Admin creates) -->
+  <div id="task-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4">
+    <div class="bg-white rounded p-4 w-full max-w-md space-y-3">
+      <h3 class="font-bold text-lg">Create Task</h3>
+      <input id="task-title" class="border p-2 rounded w-full" placeholder="Title">
+      <textarea id="task-desc" class="border p-2 rounded w-full" placeholder="Description"></textarea>
+      <select id="task-assignee" class="border p-2 rounded w-full"></select>
+      <div class="flex justify-end space-x-2">
+        <button id="close-task-modal" class="px-3 py-1 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
+        <button id="save-task-btn" class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Request Modal (Client) -->
+  <div id="project-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4">
+    <div class="bg-white rounded p-4 w-full max-w-md space-y-3">
+      <h3 class="font-bold text-lg">Request Project</h3>
+      <input id="project-title" class="border p-2 rounded w-full" placeholder="Title">
+      <textarea id="project-desc" class="border p-2 rounded w-full" placeholder="Description"></textarea>
+      <div class="flex justify-end space-x-2">
+        <button id="close-project-modal" class="px-3 py-1 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
+        <button id="save-project-btn" class="px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700">Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign Project Modal (Manager assigns to artisan) -->
+  <div id="assign-project-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4">
+    <div class="bg-white rounded p-4 w-full max-w-md space-y-3">
+      <h3 class="font-bold text-lg">Assign Project</h3>
+      <div class="text-sm text-gray-600">Project: <span id="assign-project-title"></span></div>
+      <select id="assign-project-artisan" class="border p-2 rounded w-full"></select>
+      <div class="flex justify-end space-x-2">
+        <button id="close-assign-project-modal" class="px-3 py-1 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
+        <button id="confirm-assign-project-btn" class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">Assign</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Artisan log inventory modal -->
+  <div id="log-inventory-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4">
+    <div class="bg-white rounded p-4 w-full max-w-md space-y-3">
+      <h3 class="font-bold text-lg">Log Inventory Used</h3>
+      <div class="text-sm text-gray-600">Task: <span id="log-inventory-task-title"></span></div>
+      <select id="log-inventory-select" class="border p-2 rounded w-full"></select>
+      <input id="log-inventory-qty" class="border p-2 rounded w-full" type="number" min="1" placeholder="Quantity used">
+      <div class="flex justify-end space-x-2">
+        <button id="close-log-inventory-modal" class="px-3 py-1 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
+        <button id="save-log-inventory-btn" class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">Log</button>
+      </div>
+    </div>
+  </div>
+
+<script src="app.js"></script>
+</body>
 </html>
